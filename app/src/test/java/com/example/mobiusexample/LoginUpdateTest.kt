@@ -33,10 +33,9 @@ class LoginUpdateTest {
     fun `when validation succeeds, then do login`() {
         val username = "simple"
         val password = "simple123"
-        val credentialsModel = LoginModel.BLANK.enteredCredentials(
-            username = username,
-            password = password
-        )
+        val credentialsModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
 
         updateSpec
             .given(credentialsModel)
@@ -53,10 +52,9 @@ class LoginUpdateTest {
     fun `when validation fails then show validation error`() {
         val username = "simple"
         val password = "simple123"
-        val credentialsModel = LoginModel.BLANK.enteredCredentials(
-            username = username,
-            password = password
-        )
+        val credentialsModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
 
         val expectedValidationError = credentialsModel
             .usernameValidationError(INVALID)
@@ -79,10 +77,10 @@ class LoginUpdateTest {
     fun `when login succeeds, then save token and navigate to home`() {
         val username = "simple"
         val password = "simple123"
-        val loggingInModel = LoginModel.BLANK.enteredCredentials(
-            username = username,
-            password = password
-        ).loggingIn()
+        val loggingInModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
+            .loggingIn()
 
         updateSpec
             .given(loggingInModel)
@@ -99,11 +97,9 @@ class LoginUpdateTest {
     fun `when login fails with server error, then show error message`() {
         val username = "simple"
         val password = "simple123"
-        val loggingInModel = LoginModel.BLANK
-            .enteredCredentials(
-                username = username,
-                password = password
-            )
+        val loggingInModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
             .loggingIn()
 
         updateSpec
@@ -121,11 +117,9 @@ class LoginUpdateTest {
     fun `when login fails due to user being blocked, then show error message`() {
         val username = "simple"
         val password = "simple123"
-        val loggingInModel = LoginModel.BLANK
-            .enteredCredentials(
-                username = username,
-                password = password
-            )
+        val loggingInModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
             .loggingIn()
 
         updateSpec
