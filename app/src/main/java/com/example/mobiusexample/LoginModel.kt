@@ -24,4 +24,6 @@ data class LoginModel(
     fun passwordValidationError(error: ValidationError): LoginModel =
         copy(passwordError = error)
 
+    fun loginFailed(): LoginModel =
+        copy(loginStatus = LoginStatus.FAIL)
 }

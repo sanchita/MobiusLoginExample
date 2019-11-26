@@ -93,4 +93,26 @@ class LoginUpdateTest {
             )
     }
 
+    @Test
+    fun `when login fails with server error, then show error message`() {
+        val username = "simple"
+        val password = "simple123"
+        val loggingInModel = LoginModel.BLANK
+            .enteredCredentials(
+                username = username,
+                password = password
+            )
+            .loggingIn()
+
+        updateSpec
+            .given(loggingInModel)
+            .whenEvent(LoginServerError)
+            .then(
+                assertThatNext(
+                    hasModel(loggingInModel.loginFailed()),
+                    hasEffects(ShowErrorMessage as LoginEffect)
+                )
+            )
+    }
+
 }

@@ -9,3 +9,5 @@ object LoginApi : LoginEffect()
 object SaveToken : LoginEffect()
 
 object ShowHome : LoginEffect()
+
+object ShowErrorMessage : LoginEffect()

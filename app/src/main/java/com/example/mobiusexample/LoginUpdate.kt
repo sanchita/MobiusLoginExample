@@ -30,6 +30,9 @@ class LoginUpdate :
             LoginSuccess -> {
                 dispatch(setOf(SaveToken, ShowHome))
             }
+            LoginServerError -> {
+                next(model.loginFailed(), setOf(ShowErrorMessage))
+            }
         }
     }
 

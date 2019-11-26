@@ -12,3 +12,5 @@ data class ValidationFailed(
 ) : LoginEvent()
 
 object LoginSuccess : LoginEvent()
+
+object LoginServerError : LoginEvent()
