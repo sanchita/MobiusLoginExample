@@ -23,6 +23,17 @@ class LoginUpdate :
                     setOf(LoginApi)
                 )
             }
+            is ValidationFailed -> {
+                val validationError = when {
+                    event.usernameError != null && event.passwordError != null -> model
+                        .usernameValidationError(event.usernameError)
+                        .passwordValidationError(event.passwordError)
+                    event.usernameError != null -> model.usernameValidationError(event.usernameError)
+                    event.passwordError != null -> model.passwordValidationError(event.passwordError)
+                    else -> throw IllegalStateException("Run! Invalid usernameError and passwordError case!")
+                }
+                next(validationError)
+            }
         }
     }
 

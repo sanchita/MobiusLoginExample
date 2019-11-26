@@ -1,7 +1,7 @@
 package com.example.mobiusexample
 
-import com.spotify.mobius.test.NextMatchers.hasEffects
-import com.spotify.mobius.test.NextMatchers.hasModel
+import com.example.mobiusexample.ValidationError.INVALID
+import com.spotify.mobius.test.NextMatchers.*
 import com.spotify.mobius.test.UpdateSpec
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
 import org.junit.Test
@@ -47,4 +47,27 @@ class LoginUpdateTest {
             )
     }
 
+    @Test
+    fun `when validation fails then show validation error`() {
+        val username = "simple"
+        val password = "simple123"
+        val credentialsModel = LoginModel.BLANK.enteredCredentials(
+            username = username,
+            password = password
+        )
+
+        updateSpec
+            .given(credentialsModel)
+            .whenEvent(ValidationFailed(INVALID, INVALID))
+            .then(
+                assertThatNext(
+                    hasModel(
+                        credentialsModel
+                            .usernameValidationError(INVALID)
+                            .passwordValidationError(INVALID)
+                    ),
+                    hasNoEffects()
+                )
+            )
+    }
 }
