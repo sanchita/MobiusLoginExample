@@ -26,4 +26,25 @@ class LoginUpdateTest {
                 )
             )
     }
+
+    @Test
+    fun `when validation succeeds, then do login`() {
+        val username = "simple"
+        val password = "simple123"
+        val credentialsModel = LoginModel.BLANK.enteredCredentials(
+            username = username,
+            password = password
+        )
+
+        updateSpec
+            .given(credentialsModel)
+            .whenEvent(ValidationSuccess)
+            .then(
+                assertThatNext(
+                    hasModel(credentialsModel.loggingIn()),
+                    hasEffects(LoginApi as LoginEffect)
+                )
+            )
+    }
+
 }
