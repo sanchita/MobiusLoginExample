@@ -1,6 +1,7 @@
 package com.example.mobiusexample
 
 import com.spotify.mobius.Next
+import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
 
@@ -24,16 +25,28 @@ class LoginUpdate :
                 )
             }
             is ValidationFailed -> {
-                val validationError = when {
-                    event.usernameError != null && event.passwordError != null -> model
-                        .usernameValidationError(event.usernameError)
-                        .passwordValidationError(event.passwordError)
-                    event.usernameError != null -> model.usernameValidationError(event.usernameError)
-                    event.passwordError != null -> model.passwordValidationError(event.passwordError)
-                    else -> throw IllegalStateException("Run! Invalid usernameError and passwordError case!")
-                }
-                next(validationError)
+                next(modelForValidationError(event, model))
             }
+            LoginSuccess -> {
+                dispatch(setOf(SaveToken, ShowHome))
+            }
+        }
+    }
+
+    private fun modelForValidationError(
+        event: ValidationFailed,
+        model: LoginModel
+    ): LoginModel {
+        val isUsernameError = event.usernameError != null
+        val isPasswordError = event.passwordError != null
+
+        return when {
+            isUsernameError && isPasswordError -> model
+                .usernameValidationError(event.usernameError!!)
+                .passwordValidationError(event.passwordError!!)
+            isUsernameError -> model.usernameValidationError(event.usernameError!!)
+            isPasswordError -> model.passwordValidationError(event.passwordError!!)
+            else -> throw IllegalStateException("Run! Invalid usernameError and passwordError case!")
         }
     }
 

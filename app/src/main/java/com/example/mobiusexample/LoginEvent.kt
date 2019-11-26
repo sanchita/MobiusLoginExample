@@ -10,3 +10,5 @@ data class ValidationFailed(
     val usernameError: ValidationError?,
     val passwordError: ValidationError?
 ) : LoginEvent()
+
+object LoginSuccess : LoginEvent()

@@ -56,18 +56,41 @@ class LoginUpdateTest {
             password = password
         )
 
+        val expectedValidationError = credentialsModel
+            .usernameValidationError(INVALID)
+            .passwordValidationError(INVALID)
+
         updateSpec
             .given(credentialsModel)
             .whenEvent(ValidationFailed(INVALID, INVALID))
             .then(
                 assertThatNext(
                     hasModel(
-                        credentialsModel
-                            .usernameValidationError(INVALID)
-                            .passwordValidationError(INVALID)
+                        expectedValidationError
                     ),
                     hasNoEffects()
                 )
             )
     }
+
+    @Test
+    fun `when login succeeds, then save token and navigate to home`() {
+        val username = "simple"
+        val password = "simple123"
+        val logginInModel = LoginModel.BLANK.enteredCredentials(
+            username = username,
+            password = password
+        ).loggingIn()
+
+        updateSpec
+            .given(logginInModel)
+            .whenEvent(LoginSuccess)
+            .then(
+                assertThatNext(
+                    hasNoModel(),
+                    hasEffects(SaveToken, ShowHome)
+                )
+            )
+    }
+
 }
