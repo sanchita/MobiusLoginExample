@@ -77,13 +77,13 @@ class LoginUpdateTest {
     fun `when login succeeds, then save token and navigate to home`() {
         val username = "simple"
         val password = "simple123"
-        val logginInModel = LoginModel.BLANK.enteredCredentials(
+        val loggingInModel = LoginModel.BLANK.enteredCredentials(
             username = username,
             password = password
         ).loggingIn()
 
         updateSpec
-            .given(logginInModel)
+            .given(loggingInModel)
             .whenEvent(LoginSuccess)
             .then(
                 assertThatNext(
