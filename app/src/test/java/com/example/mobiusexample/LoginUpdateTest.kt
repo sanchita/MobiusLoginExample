@@ -1,5 +1,7 @@
 package com.example.mobiusexample
 
+import com.example.mobiusexample.LoginFailedError.BLOCKED_USER
+import com.example.mobiusexample.LoginFailedError.SERVER_ERROR
 import com.example.mobiusexample.ValidationError.INVALID
 import com.spotify.mobius.test.NextMatchers.*
 import com.spotify.mobius.test.UpdateSpec
@@ -110,9 +112,30 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(loggingInModel.loginFailed()),
-                    hasEffects(ShowErrorMessage as LoginEffect)
+                    hasEffects(ShowErrorMessage(SERVER_ERROR) as LoginEffect)
                 )
             )
     }
 
+    @Test
+    fun `when login fails due to user being blocked, then show error message`() {
+        val username = "simple"
+        val password = "simple123"
+        val loggingInModel = LoginModel.BLANK
+            .enteredCredentials(
+                username = username,
+                password = password
+            )
+            .loggingIn()
+
+        updateSpec
+            .given(loggingInModel)
+            .whenEvent(LoginBlockedUser)
+            .then(
+                assertThatNext(
+                    hasModel(loggingInModel.loginFailed()),
+                    hasEffects(ShowErrorMessage(BLOCKED_USER) as LoginEffect)
+                )
+            )
+    }
 }

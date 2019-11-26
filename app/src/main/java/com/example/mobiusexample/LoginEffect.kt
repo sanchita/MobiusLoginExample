@@ -10,4 +10,4 @@ object SaveToken : LoginEffect()
 
 object ShowHome : LoginEffect()
 
-object ShowErrorMessage : LoginEffect()
+data class ShowErrorMessage(val error: LoginFailedError) : LoginEffect()
