@@ -23,7 +23,7 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(blankModel.enteredCredentials(username, password)),
-                    hasEffects(Validate as LoginEffect)
+                    hasEffects(Validate(username, password) as LoginEffect)
                 )
             )
     }

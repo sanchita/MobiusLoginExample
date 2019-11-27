@@ -2,7 +2,7 @@ package com.example.mobiusexample
 
 sealed class LoginEffect
 
-object Validate : LoginEffect()
+data class Validate(val username: String, val password: String) : LoginEffect()
 
 object LoginApi : LoginEffect()
 

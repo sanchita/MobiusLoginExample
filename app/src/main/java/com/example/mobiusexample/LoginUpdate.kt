@@ -12,7 +12,7 @@ class LoginUpdate :
         return when (event) {
             is LoginClicked -> next(
                 model.enteredCredentials(event.username, event.password),
-                setOf(Validate)
+                setOf(Validate(event.username, event.password))
             )
             ValidationSuccess -> next(
                 model.loggingIn(),
