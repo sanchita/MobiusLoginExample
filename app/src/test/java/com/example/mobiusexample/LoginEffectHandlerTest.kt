@@ -26,6 +26,15 @@ class LoginEffectHandlerTest {
     }
 
     @Test
+    fun `when the username validation succeeds, then the validation success event should be emitted`() {
+        // when
+        effectHandlerTestCase.dispatch(Validate("simple", "simple123"))
+
+        // then
+        effectHandlerTestCase.assertOutgoingEvents(ValidationSuccess)
+    }
+
+    @Test
     fun `when the username validation fails, then the validation failed event should be emitted`() {
         // when
         effectHandlerTestCase.dispatch(Validate("", "simple123"))

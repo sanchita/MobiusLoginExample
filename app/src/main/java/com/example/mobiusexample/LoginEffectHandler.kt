@@ -24,7 +24,13 @@ class LoginEffectHandler(
     private fun create(): ObservableTransformer<LoginEffect, LoginEvent> {
         return RxMobius.subtypeEffectHandler<LoginEffect, LoginEvent>()
             .addTransformer(Validate::class.java) { effectStream ->
-                effectStream.map { ValidationFailed(INVALID, null) }
+                effectStream.map {
+                    if (isUserNameValid(it.username)) {
+                        ValidationSuccess
+                    } else {
+                        ValidationFailed(INVALID, null)
+                    }
+                }
             }
             .addTransformer(LoginApi::class.java) { effectStream ->
                 effectStream
@@ -51,5 +57,10 @@ class LoginEffectHandler(
                 }
             }
             .build()
+    }
+
+    private fun isUserNameValid(username: String): Boolean {
+        val usernameRegex = Regex("[a-zA-Z]([\\w]){0,7}")
+        return username.matches(usernameRegex)
     }
 }
