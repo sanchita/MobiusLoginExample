@@ -34,6 +34,7 @@ class LoginEffectHandler(
                 userDatabase.saveAuthToken(it.authToken)
             }
             .addAction(ShowHome::class.java, loginViewActions::navigateToHome)
+            .addAction(ShowSignUpDialog::class.java, loginViewActions::showSignUpDialog)
             .build()
     }
 }

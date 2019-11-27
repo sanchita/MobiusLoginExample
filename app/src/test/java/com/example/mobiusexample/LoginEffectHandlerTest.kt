@@ -73,4 +73,14 @@ class LoginEffectHandlerTest {
         verifyNoMoreInteractions(loginViewActions)
     }
 
+    @Test
+    fun `when login fails with user does not exist, then show sign up dialog`() {
+        // when
+        effectHandlerTestCase.dispatch(ShowSignUpDialog)
+
+        // then
+        effectHandlerTestCase.assertNoOutgoingEvents()
+        verify(loginViewActions).showSignUpDialog()
+        verifyNoMoreInteractions(loginViewActions)
+    }
 }
