@@ -25,10 +25,14 @@ class LoginEffectHandler(
         return RxMobius.subtypeEffectHandler<LoginEffect, LoginEvent>()
             .addTransformer(Validate::class.java) { effectStream ->
                 effectStream.map {
-                    if (isUserNameValid(it.username)) {
+                    if (isUserNameValid(it.username) && isPasswordValid(it.password)) {
                         ValidationSuccess
-                    } else {
+                    } else if (isUserNameValid(it.username)) {
+                        ValidationFailed(null, INVALID)
+                    } else if (isPasswordValid(it.password)) {
                         ValidationFailed(INVALID, null)
+                    } else {
+                        ValidationFailed(INVALID, INVALID)
                     }
                 }
             }
@@ -63,4 +67,7 @@ class LoginEffectHandler(
         val usernameRegex = Regex("[a-zA-Z]([\\w]){0,7}")
         return username.matches(usernameRegex)
     }
+
+    private fun isPasswordValid(password: String): Boolean =
+        password.isNotBlank() && password.length >= 8
 }
