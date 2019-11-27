@@ -1,5 +1,6 @@
 package com.example.mobiusexample
 
+import com.example.mobiusexample.LoginFailedError.SERVER_ERROR
 import com.example.mobiusexample.ValidationError.INVALID
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -92,6 +93,17 @@ class LoginEffectHandlerTest {
         // then
         effectHandlerTestCase.assertNoOutgoingEvents()
         verify(loginViewActions).navigateToSignUp()
+        verifyNoMoreInteractions(loginViewActions)
+    }
+
+    @Test
+    fun `when server error is received, then show server error message to user`() {
+        // when
+        effectHandlerTestCase.dispatch(ShowErrorMessage(SERVER_ERROR))
+
+        // then
+        effectHandlerTestCase.assertNoOutgoingEvents()
+        verify(loginViewActions).showServerError()
         verifyNoMoreInteractions(loginViewActions)
     }
 }

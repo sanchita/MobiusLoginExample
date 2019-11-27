@@ -36,6 +36,11 @@ class LoginEffectHandler(
             .addAction(ShowHome::class.java, loginViewActions::navigateToHome)
             .addAction(ShowSignUpDialog::class.java, loginViewActions::showSignUpDialog)
             .addAction(NavigateToSignUp::class.java, loginViewActions::navigateToSignUp)
+            .addConsumer(ShowErrorMessage::class.java) {
+                if (it.error == LoginFailedError.SERVER_ERROR) {
+                    loginViewActions.showServerError()
+                }
+            }
             .build()
     }
 }
