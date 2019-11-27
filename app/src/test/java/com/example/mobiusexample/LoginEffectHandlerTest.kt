@@ -62,6 +62,15 @@ class LoginEffectHandlerTest {
     }
 
     @Test
+    fun `when both username and password validation succeeds, then the validation success event should be emitted`() {
+        // when
+        effectHandlerTestCase.dispatch(Validate("simple", "simple123"))
+
+        // then
+        effectHandlerTestCase.assertOutgoingEvents(ValidationSuccess)
+    }
+
+    @Test
     fun `when login api succeeds then success event should be emitted`() {
         //given
         val username = "username"
