@@ -1,6 +1,6 @@
 package com.example.mobiusexample
 
-import com.example.mobiusexample.LoginFailedError.SERVER_ERROR
+import com.example.mobiusexample.LoginFailedError.*
 import com.example.mobiusexample.ValidationError.INVALID
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -104,6 +104,17 @@ class LoginEffectHandlerTest {
         // then
         effectHandlerTestCase.assertNoOutgoingEvents()
         verify(loginViewActions).showServerError()
+        verifyNoMoreInteractions(loginViewActions)
+    }
+
+    @Test
+    fun `when blocked user error is received, then show blocked user error message to user`() {
+        // when
+        effectHandlerTestCase.dispatch(ShowErrorMessage(BLOCKED_USER))
+
+        // then
+        effectHandlerTestCase.assertNoOutgoingEvents()
+        verify(loginViewActions).showBlockedUserError()
         verifyNoMoreInteractions(loginViewActions)
     }
 }

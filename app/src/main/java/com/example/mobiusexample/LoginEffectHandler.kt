@@ -1,5 +1,6 @@
 package com.example.mobiusexample
 
+import com.example.mobiusexample.LoginFailedError.*
 import com.example.mobiusexample.ValidationError.INVALID
 import com.spotify.mobius.rx2.RxMobius
 import io.reactivex.ObservableTransformer
@@ -37,8 +38,13 @@ class LoginEffectHandler(
             .addAction(ShowSignUpDialog::class.java, loginViewActions::showSignUpDialog)
             .addAction(NavigateToSignUp::class.java, loginViewActions::navigateToSignUp)
             .addConsumer(ShowErrorMessage::class.java) {
-                if (it.error == LoginFailedError.SERVER_ERROR) {
-                    loginViewActions.showServerError()
+                when (it.error) {
+                    SERVER_ERROR -> {
+                        loginViewActions.showServerError()
+                    }
+                    BLOCKED_USER -> {
+                        loginViewActions.showBlockedUserError()
+                    }
                 }
             }
             .build()
