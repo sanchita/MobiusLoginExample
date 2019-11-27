@@ -32,6 +32,10 @@ class LoginUpdate :
                 model.loginFailed(),
                 setOf(ShowErrorMessage(INCORRECT_PASSWORD))
             )
+            LoginUserDoesNotExist -> next(
+                model.loginFailed(),
+                setOf(ShowSignUpDialog)
+            )
         }
     }
 

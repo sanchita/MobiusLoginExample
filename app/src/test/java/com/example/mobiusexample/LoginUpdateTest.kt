@@ -152,5 +152,23 @@ class LoginUpdateTest {
             )
     }
 
+    @Test
+    fun `when login fails because user does not exist then show a signup dialog`() {
+        val username = "simple"
+        val password = "simple123"
+        val loggingInModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
+            .loggingIn()
 
+        updateSpec
+            .given(loggingInModel)
+            .whenEvent(LoginUserDoesNotExist)
+            .then(
+                assertThatNext(
+                    hasModel(loggingInModel.loginFailed()),
+                    hasEffects(ShowSignUpDialog as LoginEffect)
+                )
+            )
+    }
 }

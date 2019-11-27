@@ -18,3 +18,5 @@ object LoginServerError : LoginEvent()
 object LoginBlockedUser : LoginEvent()
 
 object LoginIncorrectPassword : LoginEvent()
+
+object LoginUserDoesNotExist : LoginEvent()
