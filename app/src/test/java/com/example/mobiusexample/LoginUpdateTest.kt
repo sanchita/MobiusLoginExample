@@ -42,7 +42,7 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(credentialsModel.loggingIn()),
-                    hasEffects(LoginApi as LoginEffect)
+                    hasEffects(LoginApi(username, password) as LoginEffect)
                 )
             )
     }
@@ -76,6 +76,7 @@ class LoginUpdateTest {
     fun `when login succeeds, then save token and navigate to home`() {
         val username = "simple"
         val password = "simple123"
+        val authToken = "real-auth-token"
         val loggingInModel = LoginModel
             .BLANK
             .enteredCredentials(username, password)
@@ -83,11 +84,11 @@ class LoginUpdateTest {
 
         updateSpec
             .given(loggingInModel)
-            .whenEvent(LoginSuccess)
+            .whenEvent(LoginSuccess(authToken))
             .then(
                 assertThatNext(
                     hasNoModel(),
-                    hasEffects(SaveToken, ShowHome)
+                    hasEffects(SaveToken(authToken), ShowHome)
                 )
             )
     }

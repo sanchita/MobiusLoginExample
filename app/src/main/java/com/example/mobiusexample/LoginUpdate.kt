@@ -16,10 +16,10 @@ class LoginUpdate :
             )
             ValidationSuccess -> next(
                 model.loggingIn(),
-                setOf(LoginApi)
+                setOf(LoginApi(model.username!!, model.password!!))
             )
             is ValidationFailed -> next(modelForValidationError(event, model))
-            LoginSuccess -> dispatch(setOf(SaveToken, ShowHome))
+            is LoginSuccess -> dispatch(setOf(SaveToken(event.authToken), ShowHome))
             LoginServerError -> next(
                 model.loginFailed(),
                 setOf(ShowErrorMessage(SERVER_ERROR))

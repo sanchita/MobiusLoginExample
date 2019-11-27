@@ -4,9 +4,9 @@ sealed class LoginEffect
 
 data class Validate(val username: String, val password: String) : LoginEffect()
 
-object LoginApi : LoginEffect()
+data class LoginApi(val username: String, val password: String) : LoginEffect()
 
-object SaveToken : LoginEffect()
+data class SaveToken(val authToken: String) : LoginEffect()
 
 object ShowHome : LoginEffect()
 
