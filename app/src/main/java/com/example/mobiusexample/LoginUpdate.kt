@@ -10,33 +10,24 @@ class LoginUpdate :
     Update<LoginModel, LoginEvent, LoginEffect> {
     override fun update(model: LoginModel, event: LoginEvent): Next<LoginModel, LoginEffect> {
         return when (event) {
-            is LoginClicked -> {
-                next(
-                    model.enteredCredentials(
-                        username = event.username,
-                        password = event.password
-                    ),
-                    setOf(Validate)
-                )
-            }
-            ValidationSuccess -> {
-                next(
-                    model.loggingIn(),
-                    setOf(LoginApi)
-                )
-            }
-            is ValidationFailed -> {
-                next(modelForValidationError(event, model))
-            }
-            LoginSuccess -> {
-                dispatch(setOf(SaveToken, ShowHome))
-            }
-            LoginServerError -> {
-                next(model.loginFailed(), setOf(ShowErrorMessage(SERVER_ERROR)))
-            }
-            LoginBlockedUser -> {
-                next(model.loginFailed(), setOf(ShowErrorMessage(BLOCKED_USER)))
-            }
+            is LoginClicked -> next(
+                model.enteredCredentials(event.username, event.password),
+                setOf(Validate)
+            )
+            ValidationSuccess -> next(
+                model.loggingIn(),
+                setOf(LoginApi)
+            )
+            is ValidationFailed -> next(modelForValidationError(event, model))
+            LoginSuccess -> dispatch(setOf(SaveToken, ShowHome))
+            LoginServerError -> next(
+                model.loginFailed(),
+                setOf(ShowErrorMessage(SERVER_ERROR))
+            )
+            LoginBlockedUser -> next(
+                model.loginFailed(),
+                setOf(ShowErrorMessage(BLOCKED_USER))
+            )
             LoginIncorrectPassword -> next(
                 model.loginFailed(),
                 setOf(ShowErrorMessage(INCORRECT_PASSWORD))
