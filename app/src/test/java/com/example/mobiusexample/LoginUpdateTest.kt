@@ -192,4 +192,24 @@ class LoginUpdateTest {
                 )
             )
     }
+
+    @Test
+    fun `when user starts typing username, then clear username error`() {
+        val username = "simple"
+        val password = "simple123"
+        val usernameValidationError = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
+            .usernameValidationError(INVALID)
+
+        updateSpec
+            .given(usernameValidationError)
+            .whenEvent(UsernameEntered)
+            .then(
+                assertThatNext(
+                    hasModel(usernameValidationError.clearUsernameError()),
+                    hasNoEffects()
+                )
+            )
+    }
 }

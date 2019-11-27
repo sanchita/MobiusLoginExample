@@ -22,3 +22,5 @@ object LoginIncorrectPassword : LoginEvent()
 object LoginUserDoesNotExist : LoginEvent()
 
 object SignUpUser : LoginEvent()
+
+object UsernameEntered : LoginEvent()

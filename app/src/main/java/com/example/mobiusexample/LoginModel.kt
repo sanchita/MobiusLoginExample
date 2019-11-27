@@ -26,4 +26,7 @@ data class LoginModel(
 
     fun loginFailed(): LoginModel =
         copy(loginStatus = LoginStatus.FAIL)
+
+    fun clearUsernameError(): LoginModel =
+        copy(usernameError = null)
 }

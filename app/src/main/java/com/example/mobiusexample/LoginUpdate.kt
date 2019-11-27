@@ -37,6 +37,7 @@ class LoginUpdate :
                 setOf(ShowSignUpDialog)
             )
             SignUpUser -> dispatch(setOf(NavigateToSignUp))
+            UsernameEntered -> next(model.clearUsernameError())
         }
     }
 
