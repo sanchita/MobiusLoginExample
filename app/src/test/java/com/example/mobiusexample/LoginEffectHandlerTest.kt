@@ -83,4 +83,15 @@ class LoginEffectHandlerTest {
         verify(loginViewActions).showSignUpDialog()
         verifyNoMoreInteractions(loginViewActions)
     }
+
+    @Test
+    fun `when user agrees to sign up, then navigate to sign up`() {
+        // when
+        effectHandlerTestCase.dispatch(NavigateToSignUp)
+
+        // then
+        effectHandlerTestCase.assertNoOutgoingEvents()
+        verify(loginViewActions).navigateToSignUp()
+        verifyNoMoreInteractions(loginViewActions)
+    }
 }

@@ -35,6 +35,7 @@ class LoginEffectHandler(
             }
             .addAction(ShowHome::class.java, loginViewActions::navigateToHome)
             .addAction(ShowSignUpDialog::class.java, loginViewActions::showSignUpDialog)
+            .addAction(NavigateToSignUp::class.java, loginViewActions::navigateToSignUp)
             .build()
     }
 }
