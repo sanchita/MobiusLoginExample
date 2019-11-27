@@ -6,4 +6,5 @@ interface LoginViewActions {
     fun navigateToSignUp()
     fun showServerError()
     fun showBlockedUserError()
+    fun showIncorrectPasswordError()
 }

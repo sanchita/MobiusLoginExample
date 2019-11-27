@@ -117,4 +117,15 @@ class LoginEffectHandlerTest {
         verify(loginViewActions).showBlockedUserError()
         verifyNoMoreInteractions(loginViewActions)
     }
+
+    @Test
+    fun `when incorrect password error is received, then show incorrect password error message to user`() {
+        // when
+        effectHandlerTestCase.dispatch(ShowErrorMessage(INCORRECT_PASSWORD))
+
+        // then
+        effectHandlerTestCase.assertNoOutgoingEvents()
+        verify(loginViewActions).showIncorrectPasswordError()
+        verifyNoMoreInteractions(loginViewActions)
+    }
 }

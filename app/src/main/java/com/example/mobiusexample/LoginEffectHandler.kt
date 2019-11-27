@@ -45,6 +45,9 @@ class LoginEffectHandler(
                     BLOCKED_USER -> {
                         loginViewActions.showBlockedUserError()
                     }
+                    INCORRECT_PASSWORD -> {
+                        loginViewActions.showIncorrectPasswordError()
+                    }
                 }
             }
             .build()
