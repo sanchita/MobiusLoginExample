@@ -212,4 +212,24 @@ class LoginUpdateTest {
                 )
             )
     }
+
+    @Test
+    fun `when user starts typing password, then clean password error`() {
+        val username = "simple"
+        val password = "simple123"
+        val passwordValidationError = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
+            .passwordValidationError(INVALID)
+
+        updateSpec
+            .given(passwordValidationError)
+            .whenEvent(PasswordEntered)
+            .then(
+                assertThatNext(
+                    hasModel(passwordValidationError.clearPasswordError()),
+                    hasNoEffects()
+                )
+            )
+    }
 }

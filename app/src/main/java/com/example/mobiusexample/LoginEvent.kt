@@ -24,3 +24,5 @@ object LoginUserDoesNotExist : LoginEvent()
 object SignUpUser : LoginEvent()
 
 object UsernameEntered : LoginEvent()
+
+object PasswordEntered : LoginEvent()

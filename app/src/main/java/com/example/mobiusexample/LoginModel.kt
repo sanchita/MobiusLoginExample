@@ -29,4 +29,7 @@ data class LoginModel(
 
     fun clearUsernameError(): LoginModel =
         copy(usernameError = null)
+
+    fun clearPasswordError(): LoginModel =
+        copy(passwordError = null)
 }
