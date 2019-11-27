@@ -13,3 +13,5 @@ object ShowHome : LoginEffect()
 data class ShowErrorMessage(val error: LoginFailedError) : LoginEffect()
 
 object ShowSignUpDialog : LoginEffect()
+
+object NavigateToSignUp : LoginEffect()

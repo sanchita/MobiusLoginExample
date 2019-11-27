@@ -36,6 +36,7 @@ class LoginUpdate :
                 model.loginFailed(),
                 setOf(ShowSignUpDialog)
             )
+            SignUpUser -> dispatch(setOf(NavigateToSignUp))
         }
     }
 

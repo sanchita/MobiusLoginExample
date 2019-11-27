@@ -171,4 +171,25 @@ class LoginUpdateTest {
                 )
             )
     }
+
+    @Test
+    fun `when user agrees to sign-up then navigate to sign up screen`() {
+        val username = "simple"
+        val password = "simple123"
+        val loginFailedModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
+            .loggingIn()
+            .loginFailed()
+
+        updateSpec
+            .given(loginFailedModel)
+            .whenEvent(SignUpUser)
+            .then(
+                assertThatNext(
+                    hasNoModel(),
+                    hasEffects(NavigateToSignUp as LoginEffect)
+                )
+            )
+    }
 }

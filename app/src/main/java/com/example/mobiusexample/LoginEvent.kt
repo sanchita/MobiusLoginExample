@@ -20,3 +20,5 @@ object LoginBlockedUser : LoginEvent()
 object LoginIncorrectPassword : LoginEvent()
 
 object LoginUserDoesNotExist : LoginEvent()
+
+object SignUpUser : LoginEvent()
