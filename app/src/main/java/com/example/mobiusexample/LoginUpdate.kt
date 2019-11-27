@@ -1,7 +1,6 @@
 package com.example.mobiusexample
 
-import com.example.mobiusexample.LoginFailedError.BLOCKED_USER
-import com.example.mobiusexample.LoginFailedError.SERVER_ERROR
+import com.example.mobiusexample.LoginFailedError.*
 import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -38,6 +37,10 @@ class LoginUpdate :
             LoginBlockedUser -> {
                 next(model.loginFailed(), setOf(ShowErrorMessage(BLOCKED_USER)))
             }
+            LoginIncorrectPassword -> next(
+                model.loginFailed(),
+                setOf(ShowErrorMessage(INCORRECT_PASSWORD))
+            )
         }
     }
 

@@ -1,7 +1,6 @@
 package com.example.mobiusexample
 
-import com.example.mobiusexample.LoginFailedError.BLOCKED_USER
-import com.example.mobiusexample.LoginFailedError.SERVER_ERROR
+import com.example.mobiusexample.LoginFailedError.*
 import com.example.mobiusexample.ValidationError.INVALID
 import com.spotify.mobius.test.NextMatchers.*
 import com.spotify.mobius.test.UpdateSpec
@@ -132,4 +131,26 @@ class LoginUpdateTest {
                 )
             )
     }
+
+    @Test
+    fun `when login fails due to incorrect password then show error message`() {
+        val username = "simple"
+        val password = "simple123"
+        val loggingInModel = LoginModel
+            .BLANK
+            .enteredCredentials(username, password)
+            .loggingIn()
+
+        updateSpec
+            .given(loggingInModel)
+            .whenEvent(LoginIncorrectPassword)
+            .then(
+                assertThatNext(
+                    hasModel(loggingInModel.loginFailed()),
+                    hasEffects(ShowErrorMessage(INCORRECT_PASSWORD) as LoginEffect)
+                )
+            )
+    }
+
+
 }

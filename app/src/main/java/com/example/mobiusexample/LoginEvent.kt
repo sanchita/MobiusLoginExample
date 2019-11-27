@@ -16,3 +16,5 @@ object LoginSuccess : LoginEvent()
 object LoginServerError : LoginEvent()
 
 object LoginBlockedUser : LoginEvent()
+
+object LoginIncorrectPassword : LoginEvent()
