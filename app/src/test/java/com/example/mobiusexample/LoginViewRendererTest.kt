@@ -6,12 +6,13 @@ import org.junit.Test
 
 class LoginViewRendererTest {
 
+    private val loginView = mock<LoginView>()
+    private val viewRenderer = LoginViewRenderer(loginView)
+
     @Test
     fun `it should render blank model`() {
         //given
-        val loginView = mock<LoginView>()
-        val viewRenderer = LoginViewRenderer(loginView)
-        val blankModel = LoginModel.BLANK
+         val blankModel = LoginModel.BLANK
 
         //when
         viewRenderer.render(blankModel)
@@ -19,4 +20,17 @@ class LoginViewRendererTest {
         //then
         verifyZeroInteractions(loginView)
     }
+
+    @Test
+    fun `it should render validation model`() {
+        //given
+        val validationModel = LoginModel.BLANK.enteredCredentials("simple", "simple123")
+
+        //when
+        viewRenderer.render(validationModel)
+
+        //then
+        verifyZeroInteractions(loginView)
+    }
+
 }
