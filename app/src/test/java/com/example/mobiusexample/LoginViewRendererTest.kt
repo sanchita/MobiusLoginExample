@@ -1,6 +1,9 @@
 package com.example.mobiusexample
 
+import com.example.mobiusexample.ValidationError.*
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.Test
 
@@ -33,4 +36,16 @@ class LoginViewRendererTest {
         verifyZeroInteractions(loginView)
     }
 
+    @Test
+    fun `it should render username validation error`() {
+        // given
+        val validationError = LoginModel.BLANK.usernameValidationError(INVALID)
+
+        // when
+        viewRenderer.render(validationError)
+
+        // then
+        verify(loginView).showUsernameError()
+        verifyNoMoreInteractions(loginView)
+    }
 }
