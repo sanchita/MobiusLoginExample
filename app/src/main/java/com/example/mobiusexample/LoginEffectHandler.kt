@@ -6,15 +6,17 @@ import io.reactivex.ObservableTransformer
 
 class LoginEffectHandler(
     private val loginApiCall: LoginApiCall,
-    private val userDatabase: UserDatabase
+    private val userDatabase: UserDatabase,
+    private val loginViewActions: LoginViewActions
 ) {
 
     companion object {
         fun create(
             loginApiCall: LoginApiCall,
-            userDatabase: UserDatabase
+            userDatabase: UserDatabase,
+            loginViewActions: LoginViewActions
         ): ObservableTransformer<LoginEffect, LoginEvent> {
-            return LoginEffectHandler(loginApiCall, userDatabase).create()
+            return LoginEffectHandler(loginApiCall, userDatabase, loginViewActions).create()
         }
     }
 
@@ -31,6 +33,7 @@ class LoginEffectHandler(
             .addConsumer(SaveToken::class.java) {
                 userDatabase.saveAuthToken(it.authToken)
             }
+            .addAction(ShowHome::class.java, loginViewActions::navigateToHome)
             .build()
     }
 }
