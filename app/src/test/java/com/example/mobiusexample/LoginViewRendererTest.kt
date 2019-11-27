@@ -39,13 +39,27 @@ class LoginViewRendererTest {
     @Test
     fun `it should render username validation error`() {
         // given
-        val validationError = LoginModel.BLANK.usernameValidationError(INVALID)
+        val usernameValidationError = LoginModel.BLANK.usernameValidationError(INVALID)
 
         // when
-        viewRenderer.render(validationError)
+        viewRenderer.render(usernameValidationError)
 
         // then
         verify(loginView).showUsernameError()
         verifyNoMoreInteractions(loginView)
     }
+
+    @Test
+    fun `it should render password validation error`() {
+        // given
+        val passwordValidationError = LoginModel.BLANK.passwordValidationError(INVALID)
+
+        // when
+        viewRenderer.render(passwordValidationError)
+
+        // then
+        verify(loginView).showPasswordError()
+        verifyNoMoreInteractions(loginView)
+    }
+
 }
