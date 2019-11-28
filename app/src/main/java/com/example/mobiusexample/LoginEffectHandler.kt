@@ -9,7 +9,6 @@ class LoginEffectHandler(
     private val userDatabase: UserDatabase,
     private val loginViewActions: LoginViewActions
 ) {
-
     companion object {
         fun create(
             loginApiCall: LoginApiCall,
@@ -24,14 +23,11 @@ class LoginEffectHandler(
         return RxMobius.subtypeEffectHandler<LoginEffect, LoginEvent>()
             .addTransformer(Validate::class.java) { effectStream ->
                 effectStream.map {
-                    if (it.username.isValid && it.password.isValid) {
+                    val validationErrors = it.username.validate() + it.password.validate()
+                    if (validationErrors.isEmpty()) {
                         ValidationSuccess
-                    } else if (it.username.isValid) {
-                        ValidationFailed.passwordError()
-                    } else if (it.password.isValid) {
-                        ValidationFailed.usernameError()
                     } else {
-                        ValidationFailed.usernameAndPasswordError()
+                        ValidationFailed(validationErrors)
                     }
                 }
             }

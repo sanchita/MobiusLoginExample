@@ -1,7 +1,11 @@
 package com.example.mobiusexample
 
-data class Password(val value: String) {
+import com.example.mobiusexample.ValidationError.InvalidPassword
 
-    val isValid: Boolean
+data class Password(val value: String) {
+    private val isValid: Boolean
         get() = value.isNotBlank() && value.length >= 8
+
+    fun validate(): List<ValidationError> =
+        if (isValid) emptyList() else listOf(InvalidPassword)
 }
