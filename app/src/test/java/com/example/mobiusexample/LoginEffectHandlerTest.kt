@@ -1,7 +1,8 @@
 package com.example.mobiusexample
 
 import com.example.mobiusexample.LoginFailedError.*
-import com.example.mobiusexample.Validate.Companion
+import com.example.mobiusexample.ValidationError.InvalidPassword
+import com.example.mobiusexample.ValidationError.InvalidUsername
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
@@ -40,7 +41,7 @@ class LoginEffectHandlerTest {
         effectHandlerTestCase.dispatch(Validate.from("", "simple123"))
 
         // then
-        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed.usernameError())
+        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed(listOf(InvalidUsername)))
     }
 
     @Test
@@ -58,7 +59,7 @@ class LoginEffectHandlerTest {
         effectHandlerTestCase.dispatch(Validate.from("simple", ""))
 
         // then
-        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed.passwordError())
+        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed(listOf(InvalidPassword)))
     }
 
     @Test
@@ -76,7 +77,7 @@ class LoginEffectHandlerTest {
         effectHandlerTestCase.dispatch(Validate.from("simpl@", "  "))
 
         // then
-        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed.usernameAndPasswordError())
+        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed(listOf(InvalidUsername, InvalidPassword)))
     }
 
     @Test

@@ -1,7 +1,6 @@
 package com.example.mobiusexample
 
 import com.example.mobiusexample.LoginFailedError.*
-import com.example.mobiusexample.Validate.Companion
 import com.example.mobiusexample.ValidationError.InvalidPassword
 import com.example.mobiusexample.ValidationError.InvalidUsername
 import com.spotify.mobius.test.NextMatchers.*
@@ -62,7 +61,7 @@ class LoginUpdateTest {
 
         updateSpec
             .given(credentialsModel)
-            .whenEvent(ValidationFailed.usernameAndPasswordError())
+            .whenEvent(ValidationFailed(listOf(InvalidUsername, InvalidPassword)))
             .then(
                 assertThatNext(
                     hasModel(

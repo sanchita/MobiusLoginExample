@@ -1,8 +1,5 @@
 package com.example.mobiusexample
 
-import com.example.mobiusexample.ValidationError.InvalidPassword
-import com.example.mobiusexample.ValidationError.InvalidUsername
-
 sealed class LoginEvent
 
 data class LoginClicked(
@@ -12,21 +9,7 @@ data class LoginClicked(
 
 object ValidationSuccess : LoginEvent()
 
-data class ValidationFailed(val errors: List<ValidationError>) : LoginEvent() {
-    companion object {
-        fun usernameError(): ValidationFailed {
-            return ValidationFailed(listOf(InvalidUsername))
-        }
-
-        fun passwordError(): ValidationFailed {
-            return ValidationFailed(listOf(InvalidPassword))
-        }
-
-        fun usernameAndPasswordError(): ValidationFailed {
-            return ValidationFailed(listOf(InvalidUsername, InvalidPassword))
-        }
-    }
-}
+data class ValidationFailed(val errors: List<ValidationError>) : LoginEvent()
 
 data class LoginSuccess(val authToken: String) : LoginEvent()
 
