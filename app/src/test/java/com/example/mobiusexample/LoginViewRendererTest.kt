@@ -1,6 +1,6 @@
 package com.example.mobiusexample
 
-import com.example.mobiusexample.ValidationError.InvalidUsername
+import com.example.mobiusexample.ValidationError.*
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
@@ -41,7 +41,6 @@ class LoginViewRendererTest {
         // given
         val usernameValidationError = LoginModel
             .BLANK
-            .usernameValidationError()
             .validationErrors(listOf(InvalidUsername))
 
         // when
@@ -55,7 +54,9 @@ class LoginViewRendererTest {
     @Test
     fun `it should render password validation error`() {
         // given
-        val passwordValidationError = LoginModel.BLANK.passwordValidationError()
+        val passwordValidationError = LoginModel
+            .BLANK
+            .validationErrors(listOf(InvalidPassword))
 
         // when
         viewRenderer.render(passwordValidationError)

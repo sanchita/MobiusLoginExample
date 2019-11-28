@@ -19,15 +19,7 @@ data class LoginModel(
 
     fun loggingIn(): LoginModel =
         copy(loginStatus = LoginStatus.LOGGING_IN)
-
-    @Deprecated("")
-    fun usernameValidationError(): LoginModel =
-        validationErrors(listOf(InvalidUsername))
-
-    @Deprecated("")
-    fun passwordValidationError(): LoginModel =
-        validationErrors(listOf(InvalidPassword))
-
+    
     fun loginFailed(): LoginModel =
         copy(loginStatus = LoginStatus.FAIL)
 

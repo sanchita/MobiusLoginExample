@@ -1,7 +1,8 @@
 package com.example.mobiusexample
 
 import com.example.mobiusexample.LoginFailedError.*
-import com.example.mobiusexample.ValidationError.*
+import com.example.mobiusexample.ValidationError.InvalidPassword
+import com.example.mobiusexample.ValidationError.InvalidUsername
 import com.spotify.mobius.test.NextMatchers.*
 import com.spotify.mobius.test.UpdateSpec
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
@@ -56,8 +57,6 @@ class LoginUpdateTest {
             .enteredCredentials(username, password)
 
         val expectedValidationError = credentialsModel
-            .usernameValidationError()
-            .passwordValidationError()
             .validationErrors(listOf(InvalidUsername, InvalidPassword))
 
         updateSpec
@@ -202,7 +201,7 @@ class LoginUpdateTest {
         val usernameValidationError = LoginModel
             .BLANK
             .enteredCredentials(username, password)
-            .usernameValidationError()
+            .validationErrors(listOf(InvalidUsername))
 
         updateSpec
             .given(usernameValidationError)
@@ -222,7 +221,7 @@ class LoginUpdateTest {
         val passwordValidationError = LoginModel
             .BLANK
             .enteredCredentials(username, password)
-            .passwordValidationError()
+            .validationErrors(listOf(InvalidPassword))
 
         updateSpec
             .given(passwordValidationError)
