@@ -20,49 +20,41 @@ class LoginEffectHandler(
     }
 
     private fun create(): ObservableTransformer<LoginEffect, LoginEvent> {
-        return RxMobius.subtypeEffectHandler<LoginEffect, LoginEvent>()
-            .addTransformer(Validate::class.java) { effectStream ->
-                effectStream.map {
-                    val validationErrors = it.username.validate() + it.password.validate()
-                    if (validationErrors.isEmpty()) {
-                        ValidationSuccess
-                    } else {
-                        ValidationFailed(validationErrors)
-                    }
-                }
-            }
-            .addTransformer(LoginApi::class.java) { effectStream ->
-                effectStream
-                    .flatMapSingle { loginApiCall.login(it.username, it.password) }
-                    .map { authToken -> LoginSuccess(authToken) }
-            }
-            .addConsumer(SaveToken::class.java) {
-                userDatabase.saveAuthToken(it.authToken)
-            }
+        return RxMobius
+            .subtypeEffectHandler<LoginEffect, LoginEvent>()
+            .addTransformer(Validate::class.java, validate())
+            .addTransformer(LoginApi::class.java, login())
+            .addConsumer(SaveToken::class.java) { userDatabase.saveAuthToken(it.authToken) }
             .addAction(ShowHome::class.java, loginViewActions::navigateToHome)
             .addAction(ShowSignUpDialog::class.java, loginViewActions::showSignUpDialog)
             .addAction(NavigateToSignUp::class.java, loginViewActions::navigateToSignUp)
-            .addConsumer(ShowErrorMessage::class.java) {
-                when (it.error) {
-                    SERVER_ERROR -> {
-                        loginViewActions.showServerError()
-                    }
-                    BLOCKED_USER -> {
-                        loginViewActions.showBlockedUserError()
-                    }
-                    INCORRECT_PASSWORD -> {
-                        loginViewActions.showIncorrectPasswordError()
-                    }
-                }
-            }
-            .addAction(
-                ClearUsernameValidationError::class.java,
-                loginViewActions::clearUsernameValidationError
-            )
-            .addAction(
-                ClearPasswordValidationError::class.java,
-                loginViewActions::clearPasswordValidationError
-            )
+            .addConsumer(ShowErrorMessage::class.java, ::showError)
+            .addAction(ClearUsernameValidationError::class.java, loginViewActions::clearUsernameValidationError)
+            .addAction(ClearPasswordValidationError::class.java, loginViewActions::clearPasswordValidationError)
             .build()
+    }
+
+    private fun login(): ObservableTransformer<LoginApi, LoginEvent> {
+        return ObservableTransformer { loginApiStream ->
+            loginApiStream
+                .flatMapSingle { (username, password) -> loginApiCall.login(username, password) }
+                .map { authToken -> LoginSuccess(authToken) }
+        }
+    }
+
+    private fun showError(errorMessage: ShowErrorMessage) {
+        when (errorMessage.error) {
+            SERVER_ERROR -> loginViewActions.showServerError()
+            BLOCKED_USER -> loginViewActions.showBlockedUserError()
+            INCORRECT_PASSWORD -> loginViewActions.showIncorrectPasswordError()
+        }
+    }
+
+    private fun validate(): ObservableTransformer<Validate, LoginEvent> {
+        return ObservableTransformer { validateStream ->
+            validateStream
+                .map { (username, password) -> username.validate() + password.validate() }
+                .map { if (it.isEmpty()) ValidationSuccess else ValidationFailed(it) }
+        }
     }
 }
