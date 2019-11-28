@@ -7,4 +7,5 @@ interface LoginViewActions {
     fun showServerError()
     fun showBlockedUserError()
     fun showIncorrectPasswordError()
+    fun clearUsernameValidationError()
 }

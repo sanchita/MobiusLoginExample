@@ -60,6 +60,7 @@ class LoginEffectHandler(
                     }
                 }
             }
+            .addAction(ClearUsernameValidationError::class.java, loginViewActions::clearUsernameValidationError)
             .build()
     }
 

@@ -15,3 +15,5 @@ data class ShowErrorMessage(val error: LoginFailedError) : LoginEffect()
 object ShowSignUpDialog : LoginEffect()
 
 object NavigateToSignUp : LoginEffect()
+
+object ClearUsernameValidationError : LoginEffect()
