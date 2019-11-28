@@ -64,8 +64,8 @@ class LoginUpdate :
             SignUpUser -> dispatch(setOf(
                 NavigateToSignUp
             ))
-            UsernameEntered -> next(model.clearUsernameError())
-            PasswordEntered -> next(model.clearPasswordError())
+            UsernameEntered -> next(model.clearUsernameError(), setOf(ClearUsernameValidationError))
+            PasswordEntered -> next(model.clearPasswordError(), setOf(ClearPasswordValidationError))
         }
     }
 }

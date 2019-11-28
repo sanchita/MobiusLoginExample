@@ -242,7 +242,7 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(usernameValidationError.clearUsernameError()),
-                    hasNoEffects()
+                    hasEffects(ClearUsernameValidationError as LoginEffect)
                 )
             )
     }
@@ -262,7 +262,7 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(passwordValidationError.clearPasswordError()),
-                    hasNoEffects()
+                    hasEffects(ClearPasswordValidationError as LoginEffect)
                 )
             )
     }
