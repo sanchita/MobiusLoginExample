@@ -4,11 +4,11 @@ sealed class LoginEffect
 
 data class Validate(
     val username: Username,
-    val password: String
+    val password: Password
 ) : LoginEffect() {
     companion object {
         fun from(username: String, password: String): Validate =
-            Validate(Username(username), password)
+            Validate(Username(username), Password(password))
     }
 }
 

@@ -24,11 +24,11 @@ class LoginEffectHandler(
         return RxMobius.subtypeEffectHandler<LoginEffect, LoginEvent>()
             .addTransformer(Validate::class.java) { effectStream ->
                 effectStream.map {
-                    if (it.username.isValid && isPasswordValid(it.password)) {
+                    if (it.username.isValid && it.password.isValid) {
                         ValidationSuccess
                     } else if (it.username.isValid) {
                         ValidationFailed.passwordError()
-                    } else if (isPasswordValid(it.password)) {
+                    } else if (it.password.isValid) {
                         ValidationFailed.usernameError()
                     } else {
                         ValidationFailed.usernameAndPasswordError()
@@ -69,7 +69,4 @@ class LoginEffectHandler(
             )
             .build()
     }
-
-    private fun isPasswordValid(password: String): Boolean =
-        password.isNotBlank() && password.length >= 8
 }
