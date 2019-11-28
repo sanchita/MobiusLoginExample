@@ -4,22 +4,22 @@ import com.example.mobiusexample.ValidationError.InvalidPassword
 import com.example.mobiusexample.ValidationError.InvalidUsername
 
 data class LoginModel(
-    val username: String?,
+    val username: Username? = null,
     val password: String?,
     val loginStatus: LoginStatus?,
     val validationErrors: List<ValidationError> = emptyList()
 ) {
     companion object {
-        val BLANK = LoginModel(null, null, null)
+        val BLANK = LoginModel(password = null, loginStatus = null)
     }
 
     fun enteredCredentials(username: String, password: String): LoginModel {
-        return copy(username = username, password = password)
+        return copy(username = Username(username), password = password)
     }
 
     fun loggingIn(): LoginModel =
         copy(loginStatus = LoginStatus.LOGGING_IN)
-    
+
     fun loginFailed(): LoginModel =
         copy(loginStatus = LoginStatus.FAIL)
 
