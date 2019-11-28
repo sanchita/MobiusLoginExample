@@ -3,12 +3,12 @@ package com.example.mobiusexample
 sealed class LoginEffect
 
 data class Validate(
-    val username: String,
+    val username: Username,
     val password: String
 ) : LoginEffect() {
     companion object {
         fun from(username: String, password: String): Validate =
-            Validate(username, password)
+            Validate(Username(username), password)
     }
 }
 
