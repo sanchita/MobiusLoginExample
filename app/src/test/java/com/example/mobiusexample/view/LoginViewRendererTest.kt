@@ -1,6 +1,8 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.view
 
-import com.example.mobiusexample.ValidationError.*
+import com.example.mobiusexample.domain.LoginModel
+import com.example.mobiusexample.domain.ValidationError.InvalidPassword
+import com.example.mobiusexample.domain.ValidationError.InvalidUsername
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
@@ -10,7 +12,8 @@ import org.junit.Test
 class LoginViewRendererTest {
 
     private val loginView = mock<LoginView>()
-    private val viewRenderer = LoginViewRenderer(loginView)
+    private val viewRenderer =
+        LoginViewRenderer(loginView)
 
     @Test
     fun `it should render blank model`() {

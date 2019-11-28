@@ -1,9 +1,9 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.domain
 
-import com.example.mobiusexample.LoginStatus.FAIL
-import com.example.mobiusexample.LoginStatus.LOGGING_IN
-import com.example.mobiusexample.ValidationError.InvalidPassword
-import com.example.mobiusexample.ValidationError.InvalidUsername
+import com.example.mobiusexample.domain.LoginStatus.FAIL
+import com.example.mobiusexample.domain.LoginStatus.LOGGING_IN
+import com.example.mobiusexample.domain.ValidationError.InvalidPassword
+import com.example.mobiusexample.domain.ValidationError.InvalidUsername
 
 data class LoginModel(
     val username: Username? = null,
@@ -12,11 +12,14 @@ data class LoginModel(
     val validationErrors: List<ValidationError> = emptyList()
 ) {
     companion object {
-        val BLANK = LoginModel(loginStatus = null)
+        val BLANK =
+            LoginModel(loginStatus = null)
     }
 
     fun enteredCredentials(username: String, password: String): LoginModel {
-        return copy(username = Username(username), password = Password(password))
+        return copy(
+            username = Username(username), password = Password(password)
+        )
     }
 
     fun loggingIn(): LoginModel =

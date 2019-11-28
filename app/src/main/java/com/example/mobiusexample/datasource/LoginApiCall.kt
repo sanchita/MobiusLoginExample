@@ -1,4 +1,4 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.datasource
 
 import io.reactivex.Single
 

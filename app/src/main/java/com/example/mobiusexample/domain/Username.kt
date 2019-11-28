@@ -1,6 +1,6 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.domain
 
-import com.example.mobiusexample.ValidationError.InvalidUsername
+import com.example.mobiusexample.domain.ValidationError.InvalidUsername
 
 data class Username(val value: String) {
     private val usernameRegex = Regex("[a-zA-Z]([\\w]){0,7}")

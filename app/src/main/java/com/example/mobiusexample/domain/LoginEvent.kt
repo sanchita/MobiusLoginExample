@@ -1,4 +1,4 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.domain
 
 sealed class LoginEvent
 

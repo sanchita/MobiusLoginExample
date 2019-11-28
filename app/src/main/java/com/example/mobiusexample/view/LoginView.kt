@@ -1,4 +1,4 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.view
 
 interface LoginView {
     fun showUsernameError()

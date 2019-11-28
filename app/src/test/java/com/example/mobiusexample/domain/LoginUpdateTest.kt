@@ -1,8 +1,8 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.domain
 
-import com.example.mobiusexample.LoginFailedError.*
-import com.example.mobiusexample.ValidationError.InvalidPassword
-import com.example.mobiusexample.ValidationError.InvalidUsername
+import com.example.mobiusexample.domain.LoginFailedError.*
+import com.example.mobiusexample.domain.ValidationError.InvalidPassword
+import com.example.mobiusexample.domain.ValidationError.InvalidUsername
 import com.spotify.mobius.test.NextMatchers.*
 import com.spotify.mobius.test.UpdateSpec
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
@@ -20,7 +20,12 @@ class LoginUpdateTest {
 
         updateSpec
             .given(blankModel)
-            .whenEvent(LoginClicked(username, password))
+            .whenEvent(
+                LoginClicked(
+                    username,
+                    password
+                )
+            )
             .then(
                 assertThatNext(
                     hasModel(blankModel.enteredCredentials(username, password)),
@@ -43,7 +48,12 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(credentialsModel.loggingIn()),
-                    hasEffects(LoginApi(username, password) as LoginEffect)
+                    hasEffects(
+                        LoginApi(
+                            username,
+                            password
+                        ) as LoginEffect
+                    )
                 )
             )
     }
@@ -61,7 +71,14 @@ class LoginUpdateTest {
 
         updateSpec
             .given(credentialsModel)
-            .whenEvent(ValidationFailed(listOf(InvalidUsername, InvalidPassword)))
+            .whenEvent(
+                ValidationFailed(
+                    listOf(
+                        InvalidUsername,
+                        InvalidPassword
+                    )
+                )
+            )
             .then(
                 assertThatNext(
                     hasModel(
@@ -88,7 +105,11 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasNoModel(),
-                    hasEffects(SaveToken(authToken), ShowHome)
+                    hasEffects(
+                        SaveToken(
+                            authToken
+                        ), ShowHome
+                    )
                 )
             )
     }
@@ -108,7 +129,11 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(loggingInModel.loginFailed()),
-                    hasEffects(ShowErrorMessage(SERVER_ERROR) as LoginEffect)
+                    hasEffects(
+                        ShowErrorMessage(
+                            SERVER_ERROR
+                        ) as LoginEffect
+                    )
                 )
             )
     }
@@ -128,7 +153,11 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(loggingInModel.loginFailed()),
-                    hasEffects(ShowErrorMessage(BLOCKED_USER) as LoginEffect)
+                    hasEffects(
+                        ShowErrorMessage(
+                            BLOCKED_USER
+                        ) as LoginEffect
+                    )
                 )
             )
     }
@@ -148,7 +177,11 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(loggingInModel.loginFailed()),
-                    hasEffects(ShowErrorMessage(INCORRECT_PASSWORD) as LoginEffect)
+                    hasEffects(
+                        ShowErrorMessage(
+                            INCORRECT_PASSWORD
+                        ) as LoginEffect
+                    )
                 )
             )
     }

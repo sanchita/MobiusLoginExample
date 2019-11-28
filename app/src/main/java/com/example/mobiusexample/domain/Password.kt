@@ -1,6 +1,6 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.domain
 
-import com.example.mobiusexample.ValidationError.InvalidPassword
+import com.example.mobiusexample.domain.ValidationError.InvalidPassword
 
 data class Password(val value: String) {
     private val isValid: Boolean

@@ -1,8 +1,13 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.effecthandler
 
-import com.example.mobiusexample.LoginFailedError.*
-import com.example.mobiusexample.ValidationError.InvalidPassword
-import com.example.mobiusexample.ValidationError.InvalidUsername
+import com.example.mobiusexample.datasource.LoginApiCall
+import com.example.mobiusexample.datasource.UserDatabase
+import com.example.mobiusexample.domain.*
+import com.example.mobiusexample.domain.LoginFailedError.*
+import com.example.mobiusexample.domain.ValidationError.InvalidPassword
+import com.example.mobiusexample.domain.ValidationError.InvalidUsername
+import com.example.mobiusexample.test.EffectHandlerTestCase
+import com.example.mobiusexample.view.LoginViewActions
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
@@ -19,7 +24,10 @@ class LoginEffectHandlerTest {
 
     private val effectHandler =
         LoginEffectHandler.create(loginApiCall, userDatabase, loginViewActions)
-    private val effectHandlerTestCase = EffectHandlerTestCase(effectHandler)
+    private val effectHandlerTestCase =
+        EffectHandlerTestCase(
+            effectHandler
+        )
 
     @After
     fun tearDown() {
@@ -41,7 +49,11 @@ class LoginEffectHandlerTest {
         effectHandlerTestCase.dispatch(Validate.from("", "simple123"))
 
         // then
-        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed(listOf(InvalidUsername)))
+        effectHandlerTestCase.assertOutgoingEvents(
+            ValidationFailed(
+                listOf(InvalidUsername)
+            )
+        )
     }
 
     @Test
@@ -59,7 +71,11 @@ class LoginEffectHandlerTest {
         effectHandlerTestCase.dispatch(Validate.from("simple", ""))
 
         // then
-        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed(listOf(InvalidPassword)))
+        effectHandlerTestCase.assertOutgoingEvents(
+            ValidationFailed(
+                listOf(InvalidPassword)
+            )
+        )
     }
 
     @Test
@@ -77,7 +93,11 @@ class LoginEffectHandlerTest {
         effectHandlerTestCase.dispatch(Validate.from("simpl@", "  "))
 
         // then
-        effectHandlerTestCase.assertOutgoingEvents(ValidationFailed(listOf(InvalidUsername, InvalidPassword)))
+        effectHandlerTestCase.assertOutgoingEvents(
+            ValidationFailed(
+                listOf(InvalidUsername, InvalidPassword)
+            )
+        )
     }
 
     @Test
@@ -90,10 +110,19 @@ class LoginEffectHandlerTest {
         whenever(loginApiCall.login(username, password)).thenReturn(Single.just(authToken))
 
         //when
-        effectHandlerTestCase.dispatch(LoginApi(username, password))
+        effectHandlerTestCase.dispatch(
+            LoginApi(
+                username,
+                password
+            )
+        )
 
         //then
-        effectHandlerTestCase.assertOutgoingEvents(LoginSuccess(authToken))
+        effectHandlerTestCase.assertOutgoingEvents(
+            LoginSuccess(
+                authToken
+            )
+        )
     }
 
     @Test
@@ -102,7 +131,11 @@ class LoginEffectHandlerTest {
         val authToken = "real-auth-token"
 
         // when
-        effectHandlerTestCase.dispatch(SaveToken(authToken))
+        effectHandlerTestCase.dispatch(
+            SaveToken(
+                authToken
+            )
+        )
 
         // then
         effectHandlerTestCase.assertNoOutgoingEvents()
@@ -145,7 +178,11 @@ class LoginEffectHandlerTest {
     @Test
     fun `when server error is received, then show server error message to user`() {
         // when
-        effectHandlerTestCase.dispatch(ShowErrorMessage(SERVER_ERROR))
+        effectHandlerTestCase.dispatch(
+            ShowErrorMessage(
+                SERVER_ERROR
+            )
+        )
 
         // then
         effectHandlerTestCase.assertNoOutgoingEvents()
@@ -156,7 +193,11 @@ class LoginEffectHandlerTest {
     @Test
     fun `when blocked user error is received, then show blocked user error message to user`() {
         // when
-        effectHandlerTestCase.dispatch(ShowErrorMessage(BLOCKED_USER))
+        effectHandlerTestCase.dispatch(
+            ShowErrorMessage(
+                BLOCKED_USER
+            )
+        )
 
         // then
         effectHandlerTestCase.assertNoOutgoingEvents()
@@ -167,7 +208,11 @@ class LoginEffectHandlerTest {
     @Test
     fun `when incorrect password error is received, then show incorrect password error message to user`() {
         // when
-        effectHandlerTestCase.dispatch(ShowErrorMessage(INCORRECT_PASSWORD))
+        effectHandlerTestCase.dispatch(
+            ShowErrorMessage(
+                INCORRECT_PASSWORD
+            )
+        )
 
         // then
         effectHandlerTestCase.assertNoOutgoingEvents()

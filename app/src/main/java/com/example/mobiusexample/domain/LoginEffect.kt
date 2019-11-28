@@ -1,4 +1,4 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.domain
 
 sealed class LoginEffect
 
@@ -8,7 +8,11 @@ data class Validate(
 ) : LoginEffect() {
     companion object {
         fun from(username: String, password: String): Validate =
-            Validate(Username(username), Password(password))
+            Validate(
+                Username(
+                    username
+                ), Password(password)
+            )
     }
 }
 

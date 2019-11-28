@@ -1,6 +1,10 @@
-package com.example.mobiusexample
+package com.example.mobiusexample.effecthandler
 
-import com.example.mobiusexample.LoginFailedError.*
+import com.example.mobiusexample.datasource.LoginApiCall
+import com.example.mobiusexample.datasource.UserDatabase
+import com.example.mobiusexample.domain.*
+import com.example.mobiusexample.domain.LoginFailedError.*
+import com.example.mobiusexample.view.LoginViewActions
 import com.spotify.mobius.rx2.RxMobius
 import io.reactivex.ObservableTransformer
 
@@ -15,7 +19,11 @@ class LoginEffectHandler(
             userDatabase: UserDatabase,
             loginViewActions: LoginViewActions
         ): ObservableTransformer<LoginEffect, LoginEvent> {
-            return LoginEffectHandler(loginApiCall, userDatabase, loginViewActions).create()
+            return LoginEffectHandler(
+                loginApiCall,
+                userDatabase,
+                loginViewActions
+            ).create()
         }
     }
 
@@ -29,8 +37,14 @@ class LoginEffectHandler(
             .addAction(ShowSignUpDialog::class.java, loginViewActions::showSignUpDialog)
             .addAction(NavigateToSignUp::class.java, loginViewActions::navigateToSignUp)
             .addConsumer(ShowErrorMessage::class.java, ::showError)
-            .addAction(ClearUsernameValidationError::class.java, loginViewActions::clearUsernameValidationError)
-            .addAction(ClearPasswordValidationError::class.java, loginViewActions::clearPasswordValidationError)
+            .addAction(
+                ClearUsernameValidationError::class.java,
+                loginViewActions::clearUsernameValidationError
+            )
+            .addAction(
+                ClearPasswordValidationError::class.java,
+                loginViewActions::clearPasswordValidationError
+            )
             .build()
     }
 
@@ -38,7 +52,11 @@ class LoginEffectHandler(
         return ObservableTransformer { loginApiStream ->
             loginApiStream
                 .flatMapSingle { (username, password) -> loginApiCall.login(username, password) }
-                .map { authToken -> LoginSuccess(authToken) }
+                .map { authToken ->
+                    LoginSuccess(
+                        authToken
+                    )
+                }
         }
     }
 
@@ -54,7 +72,11 @@ class LoginEffectHandler(
         return ObservableTransformer { validateStream ->
             validateStream
                 .map { (username, password) -> username.validate() + password.validate() }
-                .map { if (it.isEmpty()) ValidationSuccess else ValidationFailed(it) }
+                .map {
+                    if (it.isEmpty()) ValidationSuccess else ValidationFailed(
+                        it
+                    )
+                }
         }
     }
 }
