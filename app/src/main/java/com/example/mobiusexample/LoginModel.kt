@@ -5,16 +5,19 @@ import com.example.mobiusexample.ValidationError.InvalidUsername
 
 data class LoginModel(
     val username: Username? = null,
-    val password: String?,
+    val password: Password? = null,
     val loginStatus: LoginStatus?,
     val validationErrors: List<ValidationError> = emptyList()
 ) {
     companion object {
-        val BLANK = LoginModel(password = null, loginStatus = null)
+        val BLANK = LoginModel(loginStatus = null)
     }
 
     fun enteredCredentials(username: String, password: String): LoginModel {
-        return copy(username = Username(username), password = password)
+        return copy(
+            username = Username(username),
+            password = Password(password)
+        )
     }
 
     fun loggingIn(): LoginModel =
