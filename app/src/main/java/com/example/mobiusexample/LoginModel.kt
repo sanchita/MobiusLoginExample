@@ -1,5 +1,7 @@
 package com.example.mobiusexample
 
+import com.example.mobiusexample.LoginStatus.FAIL
+import com.example.mobiusexample.LoginStatus.LOGGING_IN
 import com.example.mobiusexample.ValidationError.InvalidPassword
 import com.example.mobiusexample.ValidationError.InvalidUsername
 
@@ -14,17 +16,14 @@ data class LoginModel(
     }
 
     fun enteredCredentials(username: String, password: String): LoginModel {
-        return copy(
-            username = Username(username),
-            password = Password(password)
-        )
+        return copy(username = Username(username), password = Password(password))
     }
 
     fun loggingIn(): LoginModel =
-        copy(loginStatus = LoginStatus.LOGGING_IN)
+        copy(loginStatus = LOGGING_IN)
 
     fun loginFailed(): LoginModel =
-        copy(loginStatus = LoginStatus.FAIL)
+        copy(loginStatus = FAIL)
 
     fun clearUsernameError(): LoginModel =
         copy(validationErrors = validationErrors - InvalidUsername)
