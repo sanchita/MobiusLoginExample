@@ -1,6 +1,6 @@
 package com.example.mobiusexample
 
-import com.example.mobiusexample.ValidationError.*
+import com.example.mobiusexample.ValidationError.INVALID
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
@@ -15,7 +15,7 @@ class LoginViewRendererTest {
     @Test
     fun `it should render blank model`() {
         //given
-         val blankModel = LoginModel.BLANK
+        val blankModel = LoginModel.BLANK
 
         //when
         viewRenderer.render(blankModel)
