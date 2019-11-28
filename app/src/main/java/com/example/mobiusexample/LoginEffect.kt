@@ -2,7 +2,15 @@ package com.example.mobiusexample
 
 sealed class LoginEffect
 
-data class Validate(val username: String, val password: String) : LoginEffect()
+data class Validate(
+    val username: String,
+    val password: String
+) : LoginEffect() {
+    companion object {
+        fun from(username: String, password: String): Validate =
+            Validate(username, password)
+    }
+}
 
 data class LoginApi(val username: String, val password: String) : LoginEffect()
 

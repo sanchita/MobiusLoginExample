@@ -1,6 +1,7 @@
 package com.example.mobiusexample
 
 import com.example.mobiusexample.LoginFailedError.*
+import com.example.mobiusexample.Validate.Companion
 import com.example.mobiusexample.ValidationError.InvalidPassword
 import com.example.mobiusexample.ValidationError.InvalidUsername
 import com.spotify.mobius.test.NextMatchers.*
@@ -24,7 +25,7 @@ class LoginUpdateTest {
             .then(
                 assertThatNext(
                     hasModel(blankModel.enteredCredentials(username, password)),
-                    hasEffects(Validate(username, password) as LoginEffect)
+                    hasEffects(Validate.from(username, password) as LoginEffect)
                 )
             )
     }

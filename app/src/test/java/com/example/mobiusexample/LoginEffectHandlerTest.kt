@@ -1,6 +1,7 @@
 package com.example.mobiusexample
 
 import com.example.mobiusexample.LoginFailedError.*
+import com.example.mobiusexample.Validate.Companion
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
@@ -27,7 +28,7 @@ class LoginEffectHandlerTest {
     @Test
     fun `when the username validation succeeds, then the validation success event should be emitted`() {
         // when
-        effectHandlerTestCase.dispatch(Validate("simple", "simple123"))
+        effectHandlerTestCase.dispatch(Validate.from("simple", "simple123"))
 
         // then
         effectHandlerTestCase.assertOutgoingEvents(ValidationSuccess)
@@ -36,7 +37,7 @@ class LoginEffectHandlerTest {
     @Test
     fun `when the username validation fails, then the validation failed event should be emitted`() {
         // when
-        effectHandlerTestCase.dispatch(Validate("", "simple123"))
+        effectHandlerTestCase.dispatch(Validate.from("", "simple123"))
 
         // then
         effectHandlerTestCase.assertOutgoingEvents(ValidationFailed.usernameError())
@@ -45,7 +46,7 @@ class LoginEffectHandlerTest {
     @Test
     fun `when the password validation succeeds, then the validation success event should be emitted`() {
         // when
-        effectHandlerTestCase.dispatch(Validate("simple", "simple123"))
+        effectHandlerTestCase.dispatch(Validate.from("simple", "simple123"))
 
         // then
         effectHandlerTestCase.assertOutgoingEvents(ValidationSuccess)
@@ -54,7 +55,7 @@ class LoginEffectHandlerTest {
     @Test
     fun `when the password validation fails, then the validation failed event should be emitted`() {
         // when
-        effectHandlerTestCase.dispatch(Validate("simple", ""))
+        effectHandlerTestCase.dispatch(Validate.from("simple", ""))
 
         // then
         effectHandlerTestCase.assertOutgoingEvents(ValidationFailed.passwordError())
@@ -63,7 +64,7 @@ class LoginEffectHandlerTest {
     @Test
     fun `when both username and password validation succeeds, then the validation success event should be emitted`() {
         // when
-        effectHandlerTestCase.dispatch(Validate("simple", "simple123"))
+        effectHandlerTestCase.dispatch(Validate.from("simple", "simple123"))
 
         // then
         effectHandlerTestCase.assertOutgoingEvents(ValidationSuccess)
@@ -72,7 +73,7 @@ class LoginEffectHandlerTest {
     @Test
     fun `when both username and password validation fails, then the validation failed event should be emitted`() {
         // when
-        effectHandlerTestCase.dispatch(Validate("simpl@", "  "))
+        effectHandlerTestCase.dispatch(Validate.from("simpl@", "  "))
 
         // then
         effectHandlerTestCase.assertOutgoingEvents(ValidationFailed.usernameAndPasswordError())
