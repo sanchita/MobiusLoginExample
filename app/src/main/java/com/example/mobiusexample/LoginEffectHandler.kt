@@ -1,7 +1,6 @@
 package com.example.mobiusexample
 
 import com.example.mobiusexample.LoginFailedError.*
-import com.example.mobiusexample.ValidationError.INVALID
 import com.spotify.mobius.rx2.RxMobius
 import io.reactivex.ObservableTransformer
 
@@ -28,11 +27,11 @@ class LoginEffectHandler(
                     if (isUserNameValid(it.username) && isPasswordValid(it.password)) {
                         ValidationSuccess
                     } else if (isUserNameValid(it.username)) {
-                        ValidationFailed(null, INVALID)
+                        ValidationFailed.passwordError()
                     } else if (isPasswordValid(it.password)) {
-                        ValidationFailed(INVALID, null)
+                        ValidationFailed.usernameError()
                     } else {
-                        ValidationFailed(INVALID, INVALID)
+                        ValidationFailed.usernameAndPasswordError()
                     }
                 }
             }

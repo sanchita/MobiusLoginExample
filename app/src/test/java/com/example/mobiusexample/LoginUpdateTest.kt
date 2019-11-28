@@ -1,7 +1,7 @@
 package com.example.mobiusexample
 
 import com.example.mobiusexample.LoginFailedError.*
-import com.example.mobiusexample.ValidationError.INVALID
+import com.example.mobiusexample.ValidationError.*
 import com.spotify.mobius.test.NextMatchers.*
 import com.spotify.mobius.test.UpdateSpec
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
@@ -47,7 +47,7 @@ class LoginUpdateTest {
             )
     }
 
-    @Test
+    @Test // FIXME Test asymmetry - Not the right kind of test.
     fun `when validation fails then show validation error`() {
         val username = "simple"
         val password = "simple123"
@@ -56,12 +56,13 @@ class LoginUpdateTest {
             .enteredCredentials(username, password)
 
         val expectedValidationError = credentialsModel
-            .usernameValidationError(INVALID)
-            .passwordValidationError(INVALID)
+            .usernameValidationError()
+            .passwordValidationError()
+            .validationErrors(listOf(InvalidUsername, InvalidPassword))
 
         updateSpec
             .given(credentialsModel)
-            .whenEvent(ValidationFailed(INVALID, INVALID))
+            .whenEvent(ValidationFailed.usernameAndPasswordError())
             .then(
                 assertThatNext(
                     hasModel(
@@ -201,7 +202,7 @@ class LoginUpdateTest {
         val usernameValidationError = LoginModel
             .BLANK
             .enteredCredentials(username, password)
-            .usernameValidationError(INVALID)
+            .usernameValidationError()
 
         updateSpec
             .given(usernameValidationError)
@@ -221,7 +222,7 @@ class LoginUpdateTest {
         val passwordValidationError = LoginModel
             .BLANK
             .enteredCredentials(username, password)
-            .passwordValidationError(INVALID)
+            .passwordValidationError()
 
         updateSpec
             .given(passwordValidationError)

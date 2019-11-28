@@ -1,5 +1,6 @@
 package com.example.mobiusexample
 
-enum class ValidationError {
-    INVALID
+sealed class ValidationError {
+    object InvalidUsername : ValidationError()
+    object InvalidPassword : ValidationError()
 }

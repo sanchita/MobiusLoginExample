@@ -1,14 +1,16 @@
 package com.example.mobiusexample
 
+import com.example.mobiusexample.ValidationError.InvalidPassword
+import com.example.mobiusexample.ValidationError.InvalidUsername
+
 data class LoginModel(
     val username: String?,
     val password: String?,
     val loginStatus: LoginStatus?,
-    val usernameError: ValidationError?,
-    val passwordError: ValidationError?
+    val validationErrors: List<ValidationError> = emptyList()
 ) {
     companion object {
-        val BLANK = LoginModel(null, null, null, null, null)
+        val BLANK = LoginModel(null, null, null)
     }
 
     fun enteredCredentials(username: String, password: String): LoginModel {
@@ -18,18 +20,24 @@ data class LoginModel(
     fun loggingIn(): LoginModel =
         copy(loginStatus = LoginStatus.LOGGING_IN)
 
-    fun usernameValidationError(error: ValidationError): LoginModel =
-        copy(usernameError = error)
+    @Deprecated("")
+    fun usernameValidationError(): LoginModel =
+        validationErrors(listOf(InvalidUsername))
 
-    fun passwordValidationError(error: ValidationError): LoginModel =
-        copy(passwordError = error)
+    @Deprecated("")
+    fun passwordValidationError(): LoginModel =
+        validationErrors(listOf(InvalidPassword))
 
     fun loginFailed(): LoginModel =
         copy(loginStatus = LoginStatus.FAIL)
 
     fun clearUsernameError(): LoginModel =
-        copy(usernameError = null)
+        copy(validationErrors = validationErrors - InvalidUsername)
 
     fun clearPasswordError(): LoginModel =
-        copy(passwordError = null)
+        copy(validationErrors = validationErrors - InvalidPassword)
+
+    fun validationErrors(validationErrors: List<ValidationError>): LoginModel {
+        return copy(validationErrors = validationErrors)
+    }
 }

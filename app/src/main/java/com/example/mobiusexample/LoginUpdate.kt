@@ -18,7 +18,7 @@ class LoginUpdate :
                 model.loggingIn(),
                 setOf(LoginApi(model.username!!, model.password!!))
             )
-            is ValidationFailed -> next(modelForValidationError(event, model))
+            is ValidationFailed -> next(model.validationErrors(event.errors))
             is LoginSuccess -> dispatch(setOf(SaveToken(event.authToken), ShowHome))
             LoginServerError -> next(
                 model.loginFailed(),
@@ -41,22 +41,4 @@ class LoginUpdate :
             PasswordEntered -> next(model.clearPasswordError())
         }
     }
-
-    private fun modelForValidationError(
-        event: ValidationFailed,
-        model: LoginModel
-    ): LoginModel {
-        val isUsernameError = event.usernameError != null
-        val isPasswordError = event.passwordError != null
-
-        return when {
-            isUsernameError && isPasswordError -> model
-                .usernameValidationError(event.usernameError!!)
-                .passwordValidationError(event.passwordError!!)
-            isUsernameError -> model.usernameValidationError(event.usernameError!!)
-            isPasswordError -> model.passwordValidationError(event.passwordError!!)
-            else -> throw IllegalStateException("Run! Invalid usernameError and passwordError case!")
-        }
-    }
-
 }
