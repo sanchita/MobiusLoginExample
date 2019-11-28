@@ -62,4 +62,16 @@ class LoginViewRendererTest {
         verifyNoMoreInteractions(loginView)
     }
 
+    @Test
+    fun `it should render logging in`() {
+        // given
+        val loggingIn = LoginModel.BLANK.loggingIn()
+
+        // when
+        viewRenderer.render(loggingIn)
+
+        // then
+        verify(loginView).showProgress()
+        verifyNoMoreInteractions(loginView)
+    }
 }
