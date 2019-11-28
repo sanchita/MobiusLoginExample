@@ -74,4 +74,17 @@ class LoginViewRendererTest {
         verify(loginView).showProgress()
         verifyNoMoreInteractions(loginView)
     }
+
+    @Test
+    fun `it should render login fail`() {
+        // given
+        val loginFail = LoginModel.BLANK.loginFailed()
+
+        // when
+        viewRenderer.render(loginFail)
+
+        // then
+        verify(loginView).hideProgress()
+        verifyNoMoreInteractions(loginView)
+    }
 }

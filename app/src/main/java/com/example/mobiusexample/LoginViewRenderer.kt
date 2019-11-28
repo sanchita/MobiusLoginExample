@@ -1,5 +1,6 @@
 package com.example.mobiusexample
 
+import com.example.mobiusexample.LoginStatus.FAIL
 import com.example.mobiusexample.LoginStatus.LOGGING_IN
 import com.example.mobiusexample.ValidationError.*
 
@@ -15,6 +16,8 @@ class LoginViewRenderer(val view: LoginView) {
 
         if (model.loginStatus == LOGGING_IN) {
             view.showProgress()
+        } else if (model.loginStatus == FAIL) {
+            view.hideProgress()
         }
     }
 }
