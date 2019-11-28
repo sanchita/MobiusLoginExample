@@ -184,4 +184,15 @@ class LoginEffectHandlerTest {
         verify(loginViewActions).clearUsernameValidationError()
         verifyNoMoreInteractions(loginViewActions)
     }
+
+    @Test
+    fun `when user starts typing for password validation error, then clear password validation error`() {
+        // when
+        effectHandlerTestCase.dispatch(ClearPasswordValidationError)
+
+        // then
+        effectHandlerTestCase.assertNoOutgoingEvents()
+        verify(loginViewActions).clearPasswordValidationError()
+        verifyNoMoreInteractions(loginViewActions)
+    }
 }

@@ -17,3 +17,5 @@ object ShowSignUpDialog : LoginEffect()
 object NavigateToSignUp : LoginEffect()
 
 object ClearUsernameValidationError : LoginEffect()
+
+object ClearPasswordValidationError : LoginEffect()
