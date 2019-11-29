@@ -3,4 +3,10 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="login">Log in</string>
+    <string name="invalid_username">Invalid username</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="error_server">Server error</string>
+    <string name="error_blocked_user">User is blocked</string>
+    <string name="error_incorrect_password">Incorrect password</string>
+    <string name="login_success">Login success</string>
 </resources>
