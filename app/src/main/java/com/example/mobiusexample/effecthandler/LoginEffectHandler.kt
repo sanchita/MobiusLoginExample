@@ -1,5 +1,6 @@
 package com.example.mobiusexample.effecthandler
 
+import com.example.mobiusexample.SchedulerProvider
 import com.example.mobiusexample.datasource.LoginApiCall
 import com.example.mobiusexample.datasource.UserDatabase
 import com.example.mobiusexample.domain.*
@@ -11,18 +12,21 @@ import io.reactivex.ObservableTransformer
 class LoginEffectHandler(
     private val loginApiCall: LoginApiCall,
     private val userDatabase: UserDatabase,
-    private val loginViewActions: LoginViewActions
+    private val loginViewActions: LoginViewActions,
+    private val schedulerProvider: SchedulerProvider
 ) {
     companion object {
         fun create(
             loginApiCall: LoginApiCall,
             userDatabase: UserDatabase,
-            loginViewActions: LoginViewActions
+            loginViewActions: LoginViewActions,
+            schedulerProvider: SchedulerProvider
         ): ObservableTransformer<LoginEffect, LoginEvent> {
             return LoginEffectHandler(
                 loginApiCall,
                 userDatabase,
-                loginViewActions
+                loginViewActions,
+                schedulerProvider
             ).create()
         }
     }
@@ -32,18 +36,36 @@ class LoginEffectHandler(
             .subtypeEffectHandler<LoginEffect, LoginEvent>()
             .addTransformer(Validate::class.java, validate())
             .addTransformer(LoginApi::class.java, login())
-            .addConsumer(SaveToken::class.java) { userDatabase.saveAuthToken(it.authToken) }
-            .addAction(ShowHome::class.java, loginViewActions::navigateToHome)
-            .addAction(ShowSignUpDialog::class.java, loginViewActions::showSignUpDialog)
-            .addAction(NavigateToSignUp::class.java, loginViewActions::navigateToSignUp)
-            .addConsumer(ShowErrorMessage::class.java, ::showError)
+            .addConsumer(
+                SaveToken::class.java,
+                { userDatabase.saveAuthToken(it.authToken) },
+                schedulerProvider.io
+            )
+            .addAction(
+                ShowHome::class.java,
+                loginViewActions::navigateToHome,
+                schedulerProvider.main
+            )
+            .addAction(
+                ShowSignUpDialog::class.java,
+                loginViewActions::showSignUpDialog,
+                schedulerProvider.main
+            )
+            .addAction(
+                NavigateToSignUp::class.java,
+                loginViewActions::navigateToSignUp,
+                schedulerProvider.main
+            )
+            .addConsumer(ShowErrorMessage::class.java, ::showError, schedulerProvider.main)
             .addAction(
                 ClearUsernameValidationError::class.java,
-                loginViewActions::clearUsernameValidationError
+                loginViewActions::clearUsernameValidationError,
+                schedulerProvider.main
             )
             .addAction(
                 ClearPasswordValidationError::class.java,
-                loginViewActions::clearPasswordValidationError
+                loginViewActions::clearPasswordValidationError,
+                schedulerProvider.main
             )
             .build()
     }

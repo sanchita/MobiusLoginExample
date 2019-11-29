@@ -7,6 +7,7 @@ import com.example.mobiusexample.domain.LoginFailedError.*
 import com.example.mobiusexample.domain.ValidationError.InvalidPassword
 import com.example.mobiusexample.domain.ValidationError.InvalidUsername
 import com.example.mobiusexample.test.EffectHandlerTestCase
+import com.example.mobiusexample.test.TestSchedulerProvider
 import com.example.mobiusexample.view.LoginViewActions
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -21,9 +22,10 @@ class LoginEffectHandlerTest {
     private val loginApiCall = mock<LoginApiCall>()
     private val userDatabase = mock<UserDatabase>()
     private val loginViewActions = mock<LoginViewActions>()
+    private val schedulerProvider = TestSchedulerProvider()
 
     private val effectHandler =
-        LoginEffectHandler.create(loginApiCall, userDatabase, loginViewActions)
+        LoginEffectHandler.create(loginApiCall, userDatabase, loginViewActions, schedulerProvider)
     private val effectHandlerTestCase =
         EffectHandlerTestCase(
             effectHandler
