@@ -1,16 +1,19 @@
 package com.example.mobiusexample.domain
 
+import android.os.Parcelable
 import com.example.mobiusexample.domain.LoginStatus.FAIL
 import com.example.mobiusexample.domain.LoginStatus.LOGGING_IN
 import com.example.mobiusexample.domain.ValidationError.InvalidPassword
 import com.example.mobiusexample.domain.ValidationError.InvalidUsername
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class LoginModel(
     val username: Username? = null,
     val password: Password? = null,
     val loginStatus: LoginStatus?,
     val validationErrors: List<ValidationError> = emptyList()
-) {
+) : Parcelable {
     companion object {
         val BLANK =
             LoginModel(loginStatus = null)
